@@ -370,41 +370,41 @@ void measure_offsets() {
 
 // Auto for Red Near Side / In four parts, will adjust according to results.
 void rood_near() {
-  // ---- 1: Start -> red object (about  cm away, slightly to the right) ----
+  // ---- 1: Start -> red object ----
   chassis.pid_turn_set(25_deg, TURN_SPEED);
   chassis.pid_wait();
  
   chassis.pid_drive_set(64_cm, DRIVE_SPEED, true);
   chassis.pid_wait();
-  // TODO: do your action at the red object here (intake, clamp, etc.)
+  // DO: do your action at the red object here (intake, clamp, etc.)
  
-  // ---- 2: Red object -> yellow peg on the right ( cm) and back ----
+  // ---- 2: Red object -> yellow peg on the right and back ----
   chassis.pid_turn_set(0_deg, TURN_SPEED);
   chassis.pid_wait();
  
-  chassis.pid_drive_set(61_cm, DRIVE_SPEED, true);
+  chassis.pid_drive_set(60_cm, DRIVE_SPEED, true);
   chassis.pid_wait();
-  // TODO: do your action at the right yellow peg here
+  // DO: do your action at the right yellow peg here
  
-  chassis.pid_drive_set(-61_cm, DRIVE_SPEED, true);
+  chassis.pid_drive_set(-60_cm, DRIVE_SPEED, true);
   chassis.pid_wait();
  
-  // ---- 3: Red object -> yellow peg below ( cm) and back ----
+  // ---- 3: Red object -> yellow peg below and back ----
   chassis.pid_turn_set(90_deg, TURN_SPEED);
   chassis.pid_wait();
  
-  chassis.pid_drive_set(64_cm, DRIVE_SPEED, true);
+  chassis.pid_drive_set(60_cm, DRIVE_SPEED, true);
   chassis.pid_wait();
-  // TODO: do your action at the lower yellow peg here
+  // DO: do your action at the lower yellow peg here
  
-  chassis.pid_drive_set(-64_cm, DRIVE_SPEED, true);
+  chassis.pid_drive_set(-60_cm, DRIVE_SPEED, true);
   chassis.pid_wait();
  
-  // ---- 4: Red object -> red zone in the bottom-left corner (about  cm) ----
+  // ---- 4: Red object -> red zone in the bottom-left corner ----
   chassis.pid_turn_set(116_deg, TURN_SPEED);
   chassis.pid_wait();
  
   chassis.pid_drive_set(86_cm, DRIVE_SPEED, true);
   chassis.pid_wait();
-  // TODO: do your final action in the zone here
+  // DO: do your final action in the zone here
 }
