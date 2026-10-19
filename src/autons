@@ -24,46 +24,35 @@ void printTemp() {
     pros::delay(500);
     }
 }
-  // Auto for Red Near Side / In four parts, will adjust according to results.
-void redNear(){
-  // ---- 1: Start -> red object ----
-  chassis.pid_turn_set(25_deg, TURN_SPEED);
-  chassis.pid_wait();
+
+// Auto for Red Near Side / In four parts, will adjust according to results.
+void redNear() {
+    chassis.setPose(0, 0, 0); // robot starts at (0,0) facing heading 0
  
-  chassis.pid_drive_set(64_cm, DRIVE_SPEED, true);
-  chassis.pid_wait();
-  // DO: do your action at the red object here (intake, clamp, etc.)
+    // ---- 1: Start -> red object ----
+    turnTo(25);
+    driveRel(64 * CM, 25, 2000);
+    // DO: action at the red object (intake, clamp, etc.)
+    // e.g. KlemToggle1.extend(); KlemToggle2.extend(); pros::delay(200);
  
-  // ---- 2: Red object -> yellow peg on the right and back ----
-  chassis.pid_turn_set(0_deg, TURN_SPEED);
-  chassis.pid_wait();
+    // ---- 2: Red object -> yellow peg on the right and back ----
+    turnTo(0);
+    driveRel(60 * CM, 0, 2000);
+    // DO: action at the right yellow peg
+    driveRel(-60 * CM, 0, 2000);
  
-  chassis.pid_drive_set(60_cm, DRIVE_SPEED, true);
-  chassis.pid_wait();
-  // DO: do your action at the right yellow peg here
+    // ---- 3: Red object -> yellow peg below and back ----
+    turnTo(90);
+    driveRel(60 * CM, 90, 2000);
+    // DO: action at the lower yellow peg
+    driveRel(-60 * CM, 90, 2000);
  
-  chassis.pid_drive_set(-60_cm, DRIVE_SPEED, true);
-  chassis.pid_wait();
- 
-  // ---- 3: Red object -> yellow peg below and back ----
-  chassis.pid_turn_set(90_deg, TURN_SPEED);
-  chassis.pid_wait();
- 
-  chassis.pid_drive_set(60_cm, DRIVE_SPEED, true);
-  chassis.pid_wait();
-  // DO: do your action at the lower yellow peg here
- 
-  chassis.pid_drive_set(-60_cm, DRIVE_SPEED, true);
-  chassis.pid_wait();
- 
-  // ---- 4: Red object -> red zone in the bottom-left corner ----
-  chassis.pid_turn_set(116_deg, TURN_SPEED);
-  chassis.pid_wait();
- 
-  chassis.pid_drive_set(86_cm, DRIVE_SPEED, true);
-  chassis.pid_wait();
-  // DO: do your final action in the zone here
+    // ---- 4: Red object -> red zone in the bottom-left corner ----
+    turnTo(116);
+    driveRel(86 * CM, 116, 2500);
+    // DO: final action in the zone
 }
+
 
 void redFar(){
 
