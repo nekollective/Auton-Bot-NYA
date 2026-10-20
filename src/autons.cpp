@@ -27,30 +27,19 @@ void printTemp() {
 
 // Auto for Red Near Side / In four parts, will adjust according to results.
 void redNear() {
-    chassis.setPose(0, 0, 0); // robot starts at (0,0) facing heading 0
- 
-    // ---- 1: Start -> red object ----
-    turnTo(25);
-    driveRel(64 * CM, 25, 2000);
-    // DO: action at the red object (intake, clamp, etc.)
-    // e.g. KlemToggle1.extend(); KlemToggle2.extend(); pros::delay(200);
- 
-    // ---- 2: Red object -> yellow peg on the right and back ----
-    turnTo(0);
-    driveRel(60 * CM, 0, 2000);
-    // DO: action at the right yellow peg
-    driveRel(-60 * CM, 0, 2000);
- 
-    // ---- 3: Red object -> yellow peg below and back ----
-    turnTo(90);
-    driveRel(60 * CM, 90, 2000);
-    // DO: action at the lower yellow peg
-    driveRel(-60 * CM, 90, 2000);
- 
-    // ---- 4: Red object -> red zone in the bottom-left corner ----
-    turnTo(116);
-    driveRel(86 * CM, 116, 2500);
-    // DO: final action in the zone
+    chassis.setPose(0, 0, 0);
+    chassis.moveToPoint(10.7, 22.8, 2000, {.maxSpeed = 100});
+    chassis.waitUntilDone();
+    chassis.moveToPoint(10.7, 46.5, 2000, {.maxSpeed = 100});
+    chassis.waitUntilDone();
+    chassis.moveToPoint(10.7, 22.8, 2000, {.forwards = false, .maxSpeed = 100});
+    chassis.waitUntilDone();
+    chassis.moveToPoint(34.3, 22.8, 2000, {.maxSpeed = 100});
+    chassis.waitUntilDone();
+    chassis.moveToPoint(10.7, 22.8, 2000, {.forwards = false, .maxSpeed = 100});
+    chassis.waitUntilDone();
+    chassis.moveToPoint(41.1, 8.0, 2500, {.maxSpeed = 100});
+    chassis.waitUntilDone();
 }
 
 
