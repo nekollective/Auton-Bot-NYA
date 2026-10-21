@@ -20,7 +20,6 @@ int getSelectedAuton() {
 }
 
 void displayAutonSelector(){
-    pros::lcd::initialize();
     pros::lcd::set_text(0, "Selecteer Auton:");
     pros::lcd::set_text(1, autonNames[selectedAuton]);
     pros::lcd::register_btn0_cb([]() {
