@@ -13,7 +13,7 @@ pros::Motor R3(3, pros::MotorGears::blue, pros::MotorEncoderUnits::degrees);
 // left motor group
 pros::MotorGroup left_motor_group({11, 12, 13});
 // right motor group
-pros::MotorGroup right_motor_group({1, -2, -3});
+pros::MotorGroup right_motor_group({-1, -2, -3});
 
 pros::adi::Pneumatics KlemToggle1('A', true);
 pros::adi::Pneumatics KlemToggle2('B', true);
