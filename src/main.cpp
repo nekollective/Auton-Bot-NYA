@@ -34,7 +34,7 @@ void initialize() {
 	pros::lcd::print(3, "CALIBRATING");
     chassis.calibrate(); // calibrate sensors
 	pros::lcd::print(3, "READY");
-	displayAutonselector(); // display auton selector on brain screen
+	displayAutonSelector(); // display auton selector on brain screen
 }
 /**
  * Runs while the robot is in the disabled state of Field Management System or
@@ -114,6 +114,12 @@ void opcontrol() {
 	pros::lcd::print(3, "OPCONTROL");
 
 	while (true) {
+		// AUTONOMOUS BUTTON //
+		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_B) &&
+    		controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)) {
+    		autonomous();
+		}
+
 		// ARCADE DRIVE //
 
 		int throttle = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
