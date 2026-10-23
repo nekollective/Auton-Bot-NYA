@@ -28,18 +28,18 @@ void printTemp() {
 // Auto for Red Near Side / In four parts, will adjust according to results.
 void redNear() {
     chassis.setPose(0, 0, 0);
-    chassis.moveToPoint(10, 20, 2000, {.maxSpeed = 100});
+    chassis.moveToPoint(10, 20, 2000, {.maxSpeed = 127});
     chassis.waitUntilDone();
-    chassis.moveToPoint(10, 45, 2000, {.maxSpeed = 100});
+    chassis.moveToPoint(10, 45, 2000, {.maxSpeed = 127});
     chassis.waitUntilDone();
-    chassis.turnToHeading(90, 1500, {.maxSpeed = 90});
-    chassis.moveToPoint(10, 20, 2000, {.forwards = false, .maxSpeed = 100});
+    chassis.turnToHeading(90, 1500, {.maxSpeed = 127});
+    chassis.moveToPoint(10, 20, 2000, {.forwards = false, .maxSpeed = 127});
     chassis.waitUntilDone();
-    chassis.moveToPoint(35, 20, 2000, {.maxSpeed = 100});
+    chassis.moveToPoint(35, 20, 2000, {.maxSpeed = 127});
     chassis.waitUntilDone();
-    chassis.moveToPoint(10, 20, 2000, {.forwards = false, .maxSpeed = 100});
+    chassis.moveToPoint(10, 20, 2000, {.forwards = false, .maxSpeed = 127});
     chassis.waitUntilDone();
-    chassis.moveToPoint(40, 10, 2500, {.maxSpeed = 100});
+    chassis.moveToPoint(40, 10, 2500, {.maxSpeed = 127});
     chassis.waitUntilDone();
 }
 

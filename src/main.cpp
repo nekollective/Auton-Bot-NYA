@@ -111,14 +111,7 @@ void autonomous() {
 void opcontrol() {
 	pros::Controller controller(pros::E_CONTROLLER_MASTER);
 	uint32_t lastDisplayUpdate = 0;
-	pros::lcd::print(3, "OPCONTROL");
-
-	while (true) {
-		// AUTONOMOUS BUTTON //
-		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_B) &&
-    		controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)) {
-    		autonomous();
-		}
+	pros::lcd::print(3, "OPCONTROL");	
 
 		// ARCADE DRIVE //
 
@@ -167,5 +160,3 @@ void opcontrol() {
 			KlemToggle2.set_value(!KlemToggle2.is_extended());
 		}
 	}
-
-}
