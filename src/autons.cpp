@@ -14,12 +14,12 @@ void testAuton() {
 
 void printTemp() {
     while (true) {
-    pros::lcd::print(0, "L1: %f", pros::c::motor_get_temperature(1));
-    pros::lcd::print(1, "L2: %f", pros::c::motor_get_temperature(2));
-    pros::lcd::print(2, "L3: %f", pros::c::motor_get_temperature(3));
-    pros::lcd::print(3, "R1: %f", pros::c::motor_get_temperature(4));
-    pros::lcd::print(4, "R2: %f", pros::c::motor_get_temperature(5));
-    pros::lcd::print(5, "R3: %f", pros::c::motor_get_temperature(6));
+    pros::lcd::print(0, "L1: %f", pros::c::motor_get_temperature(13));
+    pros::lcd::print(1, "L2: %f", pros::c::motor_get_temperature(12));
+    pros::lcd::print(2, "L3: %f", pros::c::motor_get_temperature(11));
+    pros::lcd::print(3, "R1: %f", pros::c::motor_get_temperature(1));
+    pros::lcd::print(4, "R2: %f", pros::c::motor_get_temperature(2));
+    pros::lcd::print(5, "R3: %f", pros::c::motor_get_temperature(3));
 
     pros::delay(500);
     }

@@ -19,8 +19,11 @@ pros::adi::Pneumatics KlemToggle1('A', true);
 pros::adi::Pneumatics KlemToggle2('B', true);
 
 // MOTORS
-pros::Motor Cascade(14, pros::MotorGears::blue, pros::MotorEncoderUnits::degrees);
-pros::Motor Intake(10, pros::MotorGears::blue, pros::MotorEncoderUnits::degrees);
+// If the two motors of a pair fight each other, put a minus in front of one port.
+pros::MotorGroup Cascade({14, 18}, pros::MotorGears::blue, pros::MotorEncoderUnits::degrees); // first stage
+pros::MotorGroup Intake({10, 6}, pros::MotorGears::blue, pros::MotorEncoderUnits::degrees);   // cdom
+pros::Motor Lift(16, pros::MotorGears::blue, pros::MotorEncoderUnits::degrees);
+
 
 // drivetrain settings
 lemlib::Drivetrain drivetrain(&left_motor_group, // left motor group
@@ -33,23 +36,27 @@ lemlib::Drivetrain drivetrain(&left_motor_group, // left motor group
 
 
 // imu
-pros::Imu imu(15);
-// horizontal tracking wheel encoder
-pros::Rotation horizontal_encoder(9);
-// vertical tracking wheel encoder
-pros::Rotation vertical_encoder(8);
-// horizontal tracking wheel
-lemlib::TrackingWheel horizontal_tracking_wheel(&horizontal_encoder, lemlib::Omniwheel::NEW_2, -3);
-// vertical tracking wheel
-lemlib::TrackingWheel vertical_tracking_wheel(&vertical_encoder, lemlib::Omniwheel::NEW_2, -1);
+pros::Imu imu(5);
 
-// odometry settings
-lemlib::OdomSensors sensors(&vertical_tracking_wheel, // vertical tracking wheel 1, set to null
-                            nullptr, // vertical tracking wheel 2, set to nullptr as we are using IMEs
-                            &horizontal_tracking_wheel, // horizontal tracking wheel 1
-                            nullptr, // horizontal tracking wheel 2, set to nullptr as we don't have a second one
+// odometry uses the drivetrain motor encoders + the imu.
+lemlib::OdomSensors sensors(nullptr, // vertical tracking wheel 1
+                            nullptr, // vertical tracking wheel 2
+                            nullptr, // horizontal tracking wheel 1
+                            nullptr, // horizontal tracking wheel 2
                             &imu // inertial sensor
 );
+
+
+// KLEM
+pros::adi::Pneumatics KlemToggle1({19, 'A'}, true);
+pros::adi::Pneumatics KlemToggle2({19, 'B'}, true);
+
+
+// MOTORS
+// If the two motors of a pair fight each other, put a minus in front of one port.
+pros::MotorGroup Cascade({14, 18}, pros::MotorGears::blue, pros::MotorEncoderUnits::degrees); // first stage
+pros::MotorGroup Intake({10, 6}, pros::MotorGears::blue, pros::MotorEncoderUnits::degrees);   // cdom
+pros::Motor Lift(16, pros::MotorGears::blue, pros::MotorEncoderUnits::degrees);
 
 // lateral PID controller
 lemlib::ControllerSettings lateral_controller(10, // proportional gain (kP)
@@ -62,6 +69,7 @@ lemlib::ControllerSettings lateral_controller(10, // proportional gain (kP)
                                               500, // large error range timeout, in milliseconds
                                               20 // maximum acceleration (slew)
 );
+
 
 // angular PID controller
 lemlib::ControllerSettings angular_controller(2, // proportional gain (kP)
