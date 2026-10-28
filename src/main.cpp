@@ -110,12 +110,13 @@ void autonomous() {
 void opcontrol() {
 	pros::Controller controller(pros::E_CONTROLLER_MASTER);
 	uint32_t lastDisplayUpdate = 0;
-	pros::lcd::print(3, "OPCONTROL");	
+	pros::lcd::print(3, "OPCONTROL");
 
+	while(true) {
 		// ARCADE DRIVE //
-
 		int throttle = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 		int turn = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
+		
 		if (pros::millis() - lastDisplayUpdate >= 200) {
 			lastDisplayUpdate = pros::millis();
 			lemlib::Pose pose = chassis.getPose();
@@ -128,17 +129,10 @@ void opcontrol() {
 
 		pros::delay(20);
 
-		// TANK DRIVE //
-
-		/* int throttle = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
-		int rightY = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y);
-
-		chassis.tank(throttle, rightY); */
-
 		// INTAKE //
 		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
 			Intake.move_velocity(200);
-		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2	)) {
+		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
 			Intake.move_velocity(-200);
 		} else {
 			Intake.move_velocity(0);
@@ -158,4 +152,5 @@ void opcontrol() {
 			KlemToggle1.set_value(!KlemToggle1.is_extended());
 			KlemToggle2.set_value(!KlemToggle2.is_extended());
 		}
-	}
+	} 
+}

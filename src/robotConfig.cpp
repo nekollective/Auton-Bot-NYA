@@ -3,12 +3,12 @@
 #include "pros/adi.hpp"
 #include "pros/motors.hpp"
 
-pros::Motor L1(11, pros::MotorGears::blue, pros::MotorEncoderUnits::degrees);
+/* pros::Motor L1(11, pros::MotorGears::blue, pros::MotorEncoderUnits::degrees);
 pros::Motor L2(12, pros::MotorGears::blue, pros::MotorEncoderUnits::degrees);
 pros::Motor L3(13, pros::MotorGears::blue, pros::MotorEncoderUnits::degrees);
 pros::Motor R1(1, pros::MotorGears::blue, pros::MotorEncoderUnits::degrees);
 pros::Motor R2(2, pros::MotorGears::blue, pros::MotorEncoderUnits::degrees);
-pros::Motor R3(3, pros::MotorGears::blue, pros::MotorEncoderUnits::degrees);
+pros::Motor R3(3, pros::MotorGears::blue, pros::MotorEncoderUnits::degrees); */
 
 // left motor group
 pros::MotorGroup left_motor_group({11, 12, 13});

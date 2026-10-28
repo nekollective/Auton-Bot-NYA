@@ -18,9 +18,8 @@ extern lemlib::Chassis chassis;
 extern lemlib::Drivetrain drivetrain;
  
 //MOTORS
-extern pros::MotorGroup Cascade; // first stage (14, 18)
-extern pros::MotorGroup Intake;  // cdom (10, 6)
-extern pros::Motor Lift;         // lift (16)
+extern pros::Motor Cascade;
+extern pros::MotorGroup Intake;      
  
 // SENSORS
 extern pros::Imu imu;
