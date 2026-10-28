@@ -34,7 +34,6 @@ void initialize() {
 	pros::lcd::print(3, "CALIBRATING");
     chassis.calibrate(); // calibrate sensors
 	pros::lcd::print(3, "READY");
-	displayAutonSelector(); // display auton selector on brain screen
 }
 /**
  * Runs while the robot is in the disabled state of Field Management System or
