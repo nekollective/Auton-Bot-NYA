@@ -15,8 +15,6 @@ pros::MotorGroup left_motor_group({11, 12, 13});
 // right motor group
 pros::MotorGroup right_motor_group({-1, -2, -3});
 
-pros::adi::Pneumatics KlemToggle1('A', true);
-pros::adi::Pneumatics KlemToggle2('B', true);
 
 // MOTORS
 // If the two motors of a pair fight each other, put a minus in front of one port.
@@ -35,16 +33,25 @@ lemlib::Drivetrain drivetrain(&left_motor_group, // left motor group
 );
 
 
-// imu
+// IMU
 pros::Imu imu(5);
 
-// odometry uses the drivetrain motor encoders + the imu.
-lemlib::OdomSensors sensors(nullptr, // vertical tracking wheel 1
-                            nullptr, // vertical tracking wheel 2
-                            nullptr, // horizontal tracking wheel 1
-                            nullptr, // horizontal tracking wheel 2
+// ODOM
+pros::Rotation horizontal_encoder(10);
+pros::Rotation vertical_encoder(6);
+// horizontal tracking wheel
+lemlib::TrackingWheel horizontal_tracking_wheel(&horizontal_encoder, lemlib::Omniwheel::NEW_2, -3);
+// vertical tracking wheel
+lemlib::TrackingWheel vertical_tracking_wheel(&vertical_encoder, lemlib::Omniwheel::NEW_2, -1);
+ 
+// odometry settings
+lemlib::OdomSensors sensors(&vertical_tracking_wheel, // vertical tracking wheel 1
+                            nullptr, // vertical tracking wheel 2, set to nullptr as we don't have a second one
+                            &horizontal_tracking_wheel, // horizontal tracking wheel 1
+                            nullptr, // horizontal tracking wheel 2, set to nullptr as we don't have a second one
                             &imu // inertial sensor
 );
+
 
 
 // KLEM
@@ -53,10 +60,9 @@ pros::adi::Pneumatics KlemToggle2({19, 'B'}, true);
 
 
 // MOTORS
-// If the two motors of a pair fight each other, put a minus in front of one port.
-pros::MotorGroup Cascade({14, 18}, pros::MotorGears::blue, pros::MotorEncoderUnits::degrees); // first stage
-pros::MotorGroup Intake({10, 6}, pros::MotorGears::blue, pros::MotorEncoderUnits::degrees);   // cdom
-pros::Motor Lift(16, pros::MotorGears::blue, pros::MotorEncoderUnits::degrees);
+pros::MotorGroup Intake({14, 18}, pros::MotorGears::blue, pros::MotorEncoderUnits::degrees); // first stage (L1/L2)
+pros::Motor Cascade(16, pros::MotorGears::blue, pros::MotorEncoderUnits::degrees);           // lift (R1/R2)
+
 
 // lateral PID controller
 lemlib::ControllerSettings lateral_controller(10, // proportional gain (kP)
@@ -69,8 +75,7 @@ lemlib::ControllerSettings lateral_controller(10, // proportional gain (kP)
                                               500, // large error range timeout, in milliseconds
                                               20 // maximum acceleration (slew)
 );
-
-
+ 
 // angular PID controller
 lemlib::ControllerSettings angular_controller(2, // proportional gain (kP)
                                               0, // integral gain (kI)
@@ -82,7 +87,7 @@ lemlib::ControllerSettings angular_controller(2, // proportional gain (kP)
                                               500, // large error range timeout, in milliseconds
                                               0 // maximum acceleration (slew)
 );
-
+ 
 // create the chassis
 lemlib::Chassis chassis(drivetrain, // drivetrain settings
                         lateral_controller, // lateral PID settings
