@@ -15,14 +15,6 @@ pros::MotorGroup left_motor_group({11, 12, 13});
 // right motor group
 pros::MotorGroup right_motor_group({-1, -2, -3});
 
-
-// MOTORS
-// If the two motors of a pair fight each other, put a minus in front of one port.
-pros::MotorGroup Cascade({14, 18}, pros::MotorGears::blue, pros::MotorEncoderUnits::degrees); // first stage
-pros::MotorGroup Intake({10, 6}, pros::MotorGears::blue, pros::MotorEncoderUnits::degrees);   // cdom
-pros::Motor Lift(16, pros::MotorGears::blue, pros::MotorEncoderUnits::degrees);
-
-
 // drivetrain settings
 lemlib::Drivetrain drivetrain(&left_motor_group, // left motor group
                               &right_motor_group, // right motor group
@@ -58,11 +50,9 @@ lemlib::OdomSensors sensors(&vertical_tracking_wheel, // vertical tracking wheel
 pros::adi::Pneumatics KlemToggle1({19, 'A'}, true);
 pros::adi::Pneumatics KlemToggle2({19, 'B'}, true);
 
-
 // MOTORS
 pros::MotorGroup Intake({14, 18}, pros::MotorGears::blue, pros::MotorEncoderUnits::degrees); // first stage (L1/L2)
 pros::Motor Cascade(16, pros::MotorGears::blue, pros::MotorEncoderUnits::degrees);           // lift (R1/R2)
-
 
 // lateral PID controller
 lemlib::ControllerSettings lateral_controller(10, // proportional gain (kP)
