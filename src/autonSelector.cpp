@@ -20,14 +20,15 @@ int getSelectedAuton() {
 }
 
 void displayAutonSelector(){
-    pros::lcd::set_text(0, "Selecteer Auton:");
-    pros::lcd::set_text(1, autonNames[selectedAuton]);
+    pros::lcd::initialize();
+    pros::lcd::set_text(3, "Selecteer Auton:");
+    pros::lcd::set_text(4, autonNames[selectedAuton]);
     pros::lcd::register_btn0_cb([]() {
         selectedAuton = (selectedAuton - 1 + autonCount) % autonCount;
-        pros::lcd::set_text(1, autonNames[selectedAuton]);
+        pros::lcd::set_text(4, autonNames[selectedAuton]);
     });
     pros::lcd::register_btn2_cb([]() {
         selectedAuton = (selectedAuton + 1) % autonCount;
-        pros::lcd::set_text(1, autonNames[selectedAuton]);
+        pros::lcd::set_text(4, autonNames[selectedAuton]);
     });
 }

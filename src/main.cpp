@@ -1,9 +1,10 @@
 #include "main.h"
+#include "liblvgl/llemu.hpp"
 #include "pros/misc.h"
-#include "pros/motors.h"
 #include "robotConfig.h"
 #include "autons.h"
 #include "autonSelector.h"
+#include "controlSelector.h"
 #include <cmath>
 
 /**
@@ -33,8 +34,9 @@ void initialize() {
     pros::lcd::initialize(); // initialize brain screen
 	pros::lcd::print(3, "CALIBRATING");
     chassis.calibrate(); // calibrate sensors
-	pros::lcd::print(3, "READY");
-	redNear(); // Test red near auton
+	pros::delay(5000);
+	pros::lcd::clear_line(3);
+	displayControlsSelector();
 }
 /**
  * Runs while the robot is in the disabled state of Field Management System or
@@ -66,7 +68,15 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	// run the selected autonomous routine
+		uint32_t lastDisplayUpdate = 0;
+		if (pros::millis() - lastDisplayUpdate >= 200) {
+			lastDisplayUpdate = pros::millis();
+			lemlib::Pose pose = chassis.getPose();
+			pros::lcd::print(0, "X:%.1f Y:%.1f", pose.x, pose.y);
+			pros::lcd::print(1, "Theta:%.1f", pose.theta);
+			pros::lcd::print(3, "Selected auton: %d", getSelectedAuton());
+		}	
+
 	switch (getSelectedAuton()) {
 		case 0:
 			testAuton();
@@ -95,6 +105,122 @@ void autonomous() {
 	}
 }
 
+pros::Controller controller(pros::E_CONTROLLER_MASTER);
+uint32_t lastDisplayUpdate = 0;
+
+
+void warre(){
+
+	int throttle = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+	int turn = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
+	if (pros::millis() - lastDisplayUpdate >= 200) {
+		lastDisplayUpdate = pros::millis();
+		lemlib::Pose pose = chassis.getPose();
+		pros::lcd::print(0, "X:%.1f Y:%.1f", pose.x, pose.y);
+		pros::lcd::print(1, "Theta:%.1f", pose.theta);
+		pros::lcd::print(3, "Driver: Warre");
+		pros::lcd::print(4, "Selected auton: %d", getSelectedAuton());
+	}	
+
+	// move the robot
+	chassis.arcade(throttle, turn);
+	pros::delay(20);
+
+	// INTAKE //
+	if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2) && !KlemToggle1.is_extended()) {
+		IntakeV.move_velocity(-600);
+		Klem.move_velocity(-600);
+	} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2) && !KlemToggle1.is_extended()) {
+		IntakeV.move_velocity(600);
+		Klem.move_velocity(600);
+	} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+		Klem.move_velocity(-600);
+		IntakeV.move_velocity(0);
+	} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
+		Klem.move_velocity(600);
+		IntakeV.move_velocity(0);
+	} else {
+		Klem.move_velocity(0);
+		IntakeV.move_velocity(0);
+	}
+
+	// CASCADE // 
+	if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
+		Cascade.move_velocity(600);
+	} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+		Cascade.move_velocity(-600);
+	} else {
+		Cascade.move_velocity(0);
+	}
+
+	// KLEM TOGGLE //
+	if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)) {
+		KlemToggle1.toggle();
+
+	// ROLLER TOGGLE //
+	if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)) {
+		RollerToggle1.toggle();
+	}
+	}
+
+}
+
+void toon(){
+
+	int left = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+	int right = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y);
+	if (pros::millis() - lastDisplayUpdate >= 200) {
+		lastDisplayUpdate = pros::millis();
+		lemlib::Pose pose = chassis.getPose();
+		pros::lcd::print(0, "X:%.1f Y:%.1f", pose.x, pose.y);
+		pros::lcd::print(1, "Theta:%.1f", pose.theta);
+		pros::lcd::print(3, "Driver: Toon");
+		pros::lcd::print(4, "Selected auton: %d", getSelectedAuton());
+	}	
+
+	// move the robot
+	chassis.tank(left, right);
+	pros::delay(20);
+
+	// INTAKE //
+	if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1) && !KlemToggle1.is_extended()) {
+		IntakeV.move_velocity(-600);
+		Klem.move_velocity(-600);
+	} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1) && !KlemToggle1.is_extended()) {
+		IntakeV.move_velocity(600);
+		Klem.move_velocity(600);
+	} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+		Klem.move_velocity(-600);
+		IntakeV.move_velocity(0);
+	} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
+		Klem.move_velocity(600);
+		IntakeV.move_velocity(0);
+	} else {
+		Klem.move_velocity(0);
+		IntakeV.move_velocity(0);
+	}
+
+	// CASCADE // 
+	if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
+		Cascade.move_velocity(600);
+	} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+		Cascade.move_velocity(-600);
+	} else {
+		Cascade.move_velocity(0);
+	}
+
+	// KLEM TOGGLE //
+	if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)) {
+		KlemToggle1.toggle();
+
+	// ROLLER TOGGLE //
+	if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)) {
+		RollerToggle1.toggle();
+	}
+	}
+
+}
+
 /**
  * Runs the operator control code. This function will be started in its own task
  * with the default priority and stack size whenever the robot is enabled via
@@ -109,49 +235,7 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-	pros::Controller controller(pros::E_CONTROLLER_MASTER);
-	uint32_t lastDisplayUpdate = 0;
-	pros::lcd::print(3, "OPCONTROL");
-
-	while(true) {
-		// ARCADE DRIVE //
-		int throttle = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
-		int turn = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
-		
-		if (pros::millis() - lastDisplayUpdate >= 200) {
-			lastDisplayUpdate = pros::millis();
-			lemlib::Pose pose = chassis.getPose();
-			pros::lcd::print(0, "X:%.1f Y:%.1f", pose.x, pose.y);
-			pros::lcd::print(1, "Theta:%.1f", pose.theta);
-		}
-
-		// move the robot
-		chassis.arcade(throttle, turn);
-
-		pros::delay(20);
-
-		// INTAKE //
-		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
-			Intake.move_velocity(200);
-		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
-			Intake.move_velocity(-200);
-		} else {
-			Intake.move_velocity(0);
-		}
-
-		// CASCADE //
-		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
-			Cascade.move_velocity(200);
-		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
-			Cascade.move_velocity(-200);
-		} else {
-			Cascade.move_velocity(0);
-		}
-
-		// KLEM TOGGLE //
-		if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)) {
-			KlemToggle1.set_value(!KlemToggle1.is_extended());
-			KlemToggle2.set_value(!KlemToggle2.is_extended());
-		}
-	} 
+	while (true) {
+		rednear();
+	}
 }
