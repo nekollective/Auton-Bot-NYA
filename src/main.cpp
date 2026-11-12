@@ -236,6 +236,6 @@ void toon(){
  */
 void opcontrol() {
 	while (true) {
-		rednear();
+		redNear();
 	}
 }

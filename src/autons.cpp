@@ -36,7 +36,7 @@ void redNear() {
     pros::delay(250);
     chassis.tank(127, 127, true);  // ram it at full power
     pros::delay(450);*/
-  }
+
   chassis.tank(0, 0, true);
   chassis.setPose(0, 0, 0);  // pressed against the bar again = back at the start, so fix the odometry
  
